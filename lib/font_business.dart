@@ -10,7 +10,11 @@ class NormalFont extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style:
-          const TextStyle(fontSize: 30, fontFamily: 'Nue', color: Colors.black),
+      const TextStyle(fontSize: 18,
+          fontFamily: 'Nue',
+          wordSpacing: 1,
+          height: 1,
+          color: Colors.black),
       child: Text(outputText),
     );
   }
