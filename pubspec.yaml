@@ -49,6 +49,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - lib/img/frame.png
   fonts:
   - family: Nue
     fonts:
