@@ -4,6 +4,10 @@
         android:label="qrcoder_two"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+<!--       Admob setup things-->
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-9091980042889567~4693468646"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
