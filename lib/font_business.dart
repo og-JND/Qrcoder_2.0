@@ -13,7 +13,6 @@ class NormalFont extends StatelessWidget {
       const TextStyle(fontSize: 18,
           fontFamily: 'Nue',
           wordSpacing: 1,
-          height: 1,
           color: Colors.black),
       child: Text(outputText),
     );
