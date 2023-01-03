@@ -33,13 +33,13 @@ class QrGenBoi extends StatelessWidget {
                 child: QrImage(
                   version: QrVersions.auto,
                   semanticsLabel: 'Its a qr code, neat innit?',
-                  embeddedImage: const AssetImage('lib/img/frame.png'),
+                  embeddedImage: const AssetImage('lib/assets/icon.png'),
                   gapless: true,
                   // Just to add that little image inside the Qr code
                   //
-                  //embeddedImageStyle: QrEmbeddedImageStyle(
-                  //  size: Size(40,40)
-                  //),
+                  embeddedImageStyle: QrEmbeddedImageStyle(
+                    size: Size(40,40)
+                  ),
                   data: datastuff,
                 ),
               )

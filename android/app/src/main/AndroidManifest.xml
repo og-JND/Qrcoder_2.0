@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rethink.qrcoder_two">
    <application
-        android:label="qrcoder_two"
+        android:label="QR Scanner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
