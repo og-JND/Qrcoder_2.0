@@ -1,12 +1,20 @@
 import 'dart:async';
+import 'package:qrcoder_two/qr_gen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:qrcoder_two/font_business.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-void main() => runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home:HomePage()));
+void main() {
+  runApp( MaterialApp(
+      // initialRoute: '/',
+      // routes: {
+      // '/' : (context) => HomePage(),
+      // '/generator' : (context) => QrGenBoi()
+      // },
+      debugShowCheckedModeBanner: false,
+      home:HomePage()));
+  }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String makeMeIntoAQRCode ='';
   String _scanBarcode = 'Scan a code...';
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
                 flex: 1,
                 child: Padding(
-                    padding: const EdgeInsets.fromLTRB(9,10,5,0),
+                    padding: const EdgeInsets.fromLTRB(13,10,5,9),
                     child: Column(
                       children: const [
                         Text(
@@ -68,40 +77,63 @@ class _HomePageState extends State<HomePage> {
                 )
             ),
             Expanded(
-                flex: 3,
-                child:  Padding(
-                  padding: const EdgeInsets.fromLTRB(8,0,0,40),
-                  child: Column(
-                    children:[
-                      Opacity(opacity: 0.3, child: Image.asset(
-                        'lib/img/frame.png',
-                        height: 200,
-                        width: 200,
+                flex: 4,
+                child:  Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children:[
+                    Opacity(opacity: 0.3, child: Image.asset(
+                      'lib/img/frame.png',
+                      height: 146,
+                      width: 146,
+                    ),
+                  ),
+
+                    Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 20),
+                    child: NormalFont('Results: $_scanBarcode',),
+                  ),
+
+                  IconButton(
+
+                      onPressed: () {Clipboard.setData(ClipboardData(text: _scanBarcode)).then((_){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(
+                        "Text copied to clipboard",
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontFamily: 'Nue'
+                      ),
+                    )));
+
+                  });}, icon: Icon(Icons.copy)),
+
+                ],
+                ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          // side: BorderSide(color: Colors.black)
+                        )
+                        ),
+                        backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                        foregroundColor: MaterialStateProperty.all(Colors.black87),
+                      ),
+                      onPressed: () => startScanning(),
+                      child: Text(
+                        'Start scanning',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontFamily: 'Nue'
+                        ),
                       ),
                     ),
-
-                      Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                      child: NormalFont('Results: $_scanBarcode',),
-                    ),
-
-                    IconButton(
-
-                        onPressed: () {Clipboard.setData(ClipboardData(text: _scanBarcode)).then((_){
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Text copied to clipboard")));
-
-                    });}, icon: Icon(Icons.copy))
-
-                  ],
-                ),
               ],
 
                 ),
-                ),
             ),
             const Divider(
               thickness: 1,
@@ -109,61 +141,64 @@ class _HomePageState extends State<HomePage> {
               indent: 20.2,
               color: Color(0xFF262626),
             ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              // side: BorderSide(color: Colors.black)
-                            )
-                            ),
-                            backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                            foregroundColor: MaterialStateProperty.all(Colors.black87),
-                          ),
-                          onPressed: () => startScanning(),
-                          child: Text(
-                            'Start scanning',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Nue'
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              // side: BorderSide(color: Colors.black)
-                            )
-                            ),
-                            backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                            foregroundColor: MaterialStateProperty.all(Colors.black87),
-                          ),
-                          onPressed: () => startScanning(),
-                          child: Text(
-                            'Create a QR code',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Nue'
-                            ),
-                          ),
-                        ),
-                      ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: Colors.black87,
+                      width: 2,
+                    )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: Colors.black87,
+                      width: 2,
                     ),
-
-            const Divider(
-              thickness: 1,
-              endIndent: 20.2,
-              indent: 20.2,
-              color: Color(0xFF262626),
+                  // icon: Icon(Icons.qr_code),
+                  //OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(10),
+                  //   borderSide: const BorderSide(
+                  //
+                  //     width: 3,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                ),
+                hintText: 'Input data',
+                ),
+                onChanged: (text){
+                  makeMeIntoAQRCode = text;
+                },
+              ),
             ),
-            Expanded(
-              flex: 1,
-              child: Text('Space for ads here'),
-            )
-                    //),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0,0,0,16),
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  // side: BorderSide(color: Colors.black)
+                                )
+                                ),
+                                backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
+                                foregroundColor: MaterialStateProperty.all(Colors.black87),
+                              ),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute( builder: (context) => QrGenBoi(datastuff: makeMeIntoAQRCode)));
+                              },
+                              child: Text(
+                                  'Make your own Qr Code',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nue',
+                                    color: Colors.black
+                                  ),)
+                          ),
+                        ),
           ],
         ),
       ),
